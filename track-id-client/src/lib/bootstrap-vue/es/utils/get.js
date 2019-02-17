@@ -1,0 +1,33 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = get;
+
+/**
+ * Get property defined by dot notation in string.
+ *
+ * Copyright (C) 2014 (UNLICENSE)
+ * @author Dmitry Yv <https://github.com/dy>
+ *
+ * @param  {Object} holder   Target object where to look property up
+ * @param  {string} propName Dot notation, like 'this.a.b.c'
+ * @return {*}          A property value
+ */
+function get(holder, propName) {
+  if (propName === undefined) {
+    return holder;
+  }
+
+  var propParts = (propName + '').split('.');
+  var result = holder;
+  var lastPropName;
+
+  while ((lastPropName = propParts.shift()) !== undefined) {
+    if (result[lastPropName] === undefined) return undefined;
+    result = result[lastPropName];
+  }
+
+  return result;
+}
