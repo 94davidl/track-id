@@ -1,5 +1,6 @@
 import Home from '@/components/Home'
 import Register from '@/components/Register'
+import Login from '@/components/Login'
 
 export const routes = [{
     path: '/',
@@ -10,5 +11,10 @@ export const routes = [{
     path: '/register',
     name: 'register',
     component: Register
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
   }
 ];
