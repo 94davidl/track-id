@@ -5,9 +5,8 @@
         <v-toolbar-title>Login</v-toolbar-title>
         <v-form ref="form">
           <v-text-field v-model="email" label="Email Address" required></v-text-field>
-          <v-text-field v-model="password" :append-icon="passwordVisiblity ? 'visibility_off' : 'visibility'"
-            :type="passwordVisiblity ? 'text' : 'password'" name="input-10-1" label="Password" hint="At least 8 characters"
-            counter @click:append="passwordVisiblity = !passwordVisiblity"></v-text-field>
+          <v-text-field v-model="password" :append-icon="passwordVisiblity ? 'visibility_off' : 'visibility'" :type="passwordVisiblity ? 'text' : 'password'"
+            name="input-10-1" label="Password" hint="At least 8 characters" counter @click:append="passwordVisiblity = !passwordVisiblity"></v-text-field>
           <div class="v-alert app-alert mb-3 error" v-if="error">
             <i aria-hidden="true" class="v-icon material-icons theme--light v-alert__icon">warning</i>
             <div v-html="error" />
@@ -40,10 +39,12 @@
       async onLogin(evt) {
         evt.preventDefault()
         try {
-          await AuthService.login({
+          const response = await AuthService.login({
             email: this.email,
             password: this.password,
           })
+          this.$store.dispatch('setToken', response.data.token)
+          this.$store.dispatch('setUser', response.data.user)
         } catch (error) {
           this.error = error.response.data.error;
         }

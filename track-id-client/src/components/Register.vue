@@ -8,9 +8,10 @@
           <v-text-field v-model="password" :append-icon="passwordVisiblity ? 'visibility_off' : 'visibility'" :rules="[rules.required, rules.min]"
             :type="passwordVisiblity ? 'text' : 'password'" name="input-10-1" label="Password" hint="At least 8 characters"
             counter @click:append="passwordVisiblity = !passwordVisiblity"></v-text-field>
-          <v-text-field v-model="confirmPassword" autocomplete="new-password" :icons="['fas fa-eye', 'fas fa-eye-slash']" :append-icon="passwordConfirmationVisibility ? 'visibility_off' : 'visibility'"
-            :rules="[rules.required, rules.min]" :type="passwordConfirmationVisibility ? 'text' : 'password'" name="input-10-2"
-            label="Confirm Password" hint="At least 8 characters" value="" class="input-group--focused" @click:append="passwordConfirmationVisibility = !passwordConfirmationVisibility"></v-text-field>
+          <v-text-field v-model="confirmPassword" autocomplete="new-password" :icons="['fas fa-eye', 'fas fa-eye-slash']"
+            :append-icon="passwordConfirmationVisibility ? 'visibility_off' : 'visibility'" :rules="[rules.required, rules.min]"
+            :type="passwordConfirmationVisibility ? 'text' : 'password'" name="input-10-2" label="Confirm Password"
+            hint="At least 8 characters" value="" class="input-group--focused" @click:append="passwordConfirmationVisibility = !passwordConfirmationVisibility"></v-text-field>
           <div class="v-alert app-alert mb-3 error" v-if="error">
             <i aria-hidden="true" class="v-icon material-icons theme--light v-alert__icon">warning</i>
             <div v-html="error" />
@@ -53,11 +54,13 @@
       async onSubmit(evt) {
         evt.preventDefault()
         try {
-          await AuthService.register({
+          const response = await AuthService.login({
             email: this.email,
             password: this.password,
             confirmPassword: this.confirmPassword
           })
+          this.$store.dispatch('setToken', response.data.token)
+          this.$store.dispatch('setUser', response.data.user)
         } catch (error) {
           this.error = error.response.data.error;
         }
@@ -79,7 +82,6 @@
 </script>
 
 <style scoped>
-
   .v-toolbar__title {
     font-size: 32px;
   }

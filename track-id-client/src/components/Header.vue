@@ -11,8 +11,8 @@
       <v-icon>search</v-icon>
     </v-btn>
     <v-toolbar-items>
-      <v-btn flat dark @click="navigateTo({name: 'login'})">Login</v-btn>
-      <v-btn flat dark @click="navigateTo({name: 'register'})">Sign Up</v-btn>
+      <v-btn v-if="!$store.state.isUserLoggedIn" flat dark @click="navigateTo({name: 'login'})">Login</v-btn>
+      <v-btn v-if="!$store.state.isUserLoggedIn" flat dark @click="navigateTo({name: 'register'})">Sign Up</v-btn>
     </v-toolbar-items>
   </v-toolbar>
 </template>
@@ -21,8 +21,14 @@
   export default {
     methods: {
       navigateTo(route) {
-        console.log(route);
         this.$router.push(route)
+      },
+      logOut(route) {
+        this.$store.dispatch('setToken', null)
+        this.$store.dispatch('setUser', null)
+        navigateTo({
+          name: 'home'
+        })
       }
     }
   }
